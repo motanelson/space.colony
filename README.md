@@ -1,13 +1,13 @@
 space colony
 
 
-https://pt.wikipedia.org/wiki/NRP_Arp%C3%A3o_(S161)
 
 
-https://pt.wikipedia.org/wiki/NRP_Tridente_(S160)
 
 
-https://en.wikipedia.org/wiki/Island
+
+
+
 
 The Glass Island: Life Inside a Self-Sufficient Space Colony
 
