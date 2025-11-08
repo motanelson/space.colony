@@ -5887,235 +5887,27 @@ char digitToChar(int digit) {
     // Retorna o caractere correspondente
     return asciiChars[digit];
 }
-void ppixel(int x, int y,char colors){
-    if (x>0 && y>0 && x<320 && y<200){
-           int location = 320 * y + x;
+void ppixel(int x, int y){
+    int xx=x/8;
+    int xxx=x-(xx*8);
+    int xxxx=0;
+    char colors;
+    if (x>0 && y>0 && x<640 && y<480){
+           int location = 80 * y + xx;
+           
+           colors=*(fbp +location);
+           xxxx=1<<xxx;
+           colors=colors & !(xxxx);
            *((char*)(fbp + location)) = colors;
 
     }
 }
 
-void gputc(int x,int y,char c,char colors){
-    char bits;
-    char bit;
-    int scrolls;
-    int iii=0;
-    int ii=0;
-    int xx=x;
-    int yy=y;
-    int aa=0;
-    aa=c*8;
-    for (ii=0;ii<8;ii++){
-        scrolls=128;
-        bits=font8x8[aa];
-        for (iii=0;iii<8;iii++){
-            if ((bits & scrolls)!=0){
-                ppixel(xx,yy,colors);
-            }
-            xx++;
-            scrolls=scrolls/2;
-        }
-        xx=x;
-        aa++;
-        yy++;
-    }
 
-} 
-void gputs(int x,int y,char *c,char colors){
-    int ii=0;
-    int xx=x;
-    int yy=y;
-    while(c[ii]!=0){
-        gputc(xx,yy,c[ii],colors);
-        xx=xx+8;
-        ii++;
+void cls(){
+    int a=0;
+    for(a=0;a<480*80;a++){
+        *((char*)(fbp + a)) = 0xff;
     }
 }
-
-
-void hline(int x, int y,int x2,char colors){
-    int f;
-    int xx1=x;
-    int xx2=x2;
-    int xx3=x;
-    int yy=y;
-    int steeps;
-    int location;
-    int addss;
-    if(xx2<xx1){
-        xx1=xx2;
-        xx2=xx3;
-    }
-    if(yy<0)yy=0;
-    if(yy>199)yy=199;
-    if(xx1<0)xx1=0;
-    if(xx2<0)xx2=0;
-    if(xx1>319)xx1=319;
-    if(xx2>319)xx2=319;
-                       
-    location =  320 * y + x;
-    steeps=xx2-xx1;
-    addss=1;
-    for(f=0;f<steeps;f++){
-        *((char*)(fbp + location)) = colors;
-        location=location+addss;
-    }
-}
-
-void boxs(int x,int y,int x2,int y2,char colors){
-    int f;
-    int ff;
-    int xx1=x;
-    int xx2=x2;
-    int xx3=x;
-    int yy=y;
-    int yy1=y;
-    int yy2=y2;
-    int yy3=y;
-    int steeps;
-    int steeps2;
-    int location;
-    int addss;
-    int addss2;
-    if(xx2<xx1){
-        xx1=xx2;
-        xx2=xx3;
-    }
-    if(yy2<yy1){
-        yy1=yy2;
-        yy2=yy3;
-    }
-    if(yy1<0)yy1=0;
-    if(yy2<0)yy2=0;
-    if(yy1>199)yy1=199;
-    if(yy2>199)yy2=199;
-    if(xx1<0)xx1=0;
-    if(xx2<0)xx2=0;
-    if(xx1>319)xx1=319;
-    if(xx2>319)xx2=319;
-                       
-    location =  320 * y + x;
-    steeps2=xx2;
-    steeps=yy2;
-    addss=1;
-    addss2=((320-(xx2)));
-    if(addss2<addss)addss2=0;
-    for(f=0;f<steeps;f++){
-	for(ff=0;ff<steeps2;ff++){
-                
-                *((char*)(fbp + location)) = colors;
-                location=location+addss;
-        }
-        location=location+addss2;
-   }
-}
-void vline(int x,int y,int y2,char colors){
-    int f;
-    int yy1=y;
-    int yy2=y2;
-    int yy3=y;
-    int xx=x;
-    int steeps;
-    int location;
-    int addss;
-    if(yy2<yy1){
-        yy1=yy2;
-        yy2=yy3;
-    }
-    if(xx<0)xx=0;
-    if(xx>319)xx=319;
-    if(yy1<0)yy1=0;
-    if(yy2<0)yy2=0;
-    if(yy1>199)yy1=199;
-    if(yy2>199-1)yy2=199;
-                       
-    location =  320 * y + x;
-    steeps=yy2-yy1;
-    addss=320;
-    for(f=0;f<steeps;f++){
-            *((char*)(fbp + location)) =colors;
-
-            location=location+addss;
-    }
-}
-
-void cls(char colors){
-    boxs(0,0,319,199,colors);
-
-}
-void line(int x,int y,int x2,int y2,char colors){
-    int i=-1;
-    if(x>x2 && y<y2)i=5;
-    if(x>x2 && y>y2)i=4;
-    if(x<x2 && y<y2)i=3;
-    if(x<x2 && y>y2)i=2;
-    if(y==y2 && x<x2)i=0;
-    if(x==x2 && y<y2)i=1;
-    if(y==y2 && x2<x)i=0;
-    if(x==x2 && y2<y)i=1;
-    if (i==0)hline(x,y,x2,colors);
-    if (i==1)vline(x,y,y2,colors);
-    if (i==7)hline(x2,y,x,colors);
-    if (i==6)vline(x,y2,y,colors);
-}
-void wppixel(int x, int y,int xx, int yy,int xxx, int yyy,char colors){
-    if (x>xx && y>yy && x<yyy && y<yyy){
-           int location = 320 * y + x;
-           *((char*)(fbp + location)) = colors;
-
-    }
-}
-
-void wgputc(int x,int y,int xx1,int yy1,int xxx1, int yyy1,char c,char colors){
-    char bits;
-    char bit;
-    int scrolls;
-    int iii=0;
-    int ii=0;
-    int xx=x;
-    int yy=y;
-    int aa=0;
-    aa=c*8;
-    for (ii=0;ii<8;ii++){
-        scrolls=128;
-        bits=font8x8[aa];
-        for (iii=0;iii<8;iii++){
-            if ((bits & scrolls)!=0){
-                wppixel(xx,yy,xx1,yy1,xxx1,yyy1,colors);
-            }
-            xx++;
-            scrolls=scrolls/2;
-        }
-        xx=x;
-        aa++;
-        yy++;
-    }
-
-} 
-void wgputs(int x,int y,int xx1,int yy1,int xxx1, int yyy1,char *c,char colors){
-    int ii=0;
-    int xx=x;
-    int yy=y;
-    while(c[ii]!=0){
-        wgputc(xx,yy,xx1,yy1,xxx1,yyy1,c[ii],colors);
-        xx=xx+8;
-        ii++;
-    }
-}
-
-
-void rectangle(int x,int y,int x2,int y2,char colors){
-    line(x,y,x+x2,y,colors);
-    line(x,y2+y,x+x2,y2+y,colors);
-    line(x,y,x,y+y2,colors);
-    line(x2+x,y,x2+x,y+y2,colors);
-}
-void window(int x,int y,int w,int h,char *c ,char colors){
-    boxs(x,y,w,h,colors);
-    wgputs(x+2,y+2,x,y,w+x,h+y,c,15);
-    rectangle(x,y,w,h,0);
-
-
-}
-
 

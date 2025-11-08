@@ -2,8 +2,14 @@
 [ORG 0x7C00]          ; Endereço de carregamento do bootloader
 
 start:
-    mov ax,0x13
+    mov ax,0x12
     int 0x10
+    mov dx, 0x3C4
+    mov al,2
+    out dx,al
+    inc dx
+    mov al,14
+    out dx,al
     jmp kernel
 gdt_start:
 
