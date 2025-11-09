@@ -5888,21 +5888,16 @@ char digitToChar(int digit) {
     return asciiChars[digit];
 }
 void ppixel(int x, int y){
-    int xx=x/8;
-    int xxx=x-(xx*8);
-    int xxxx=0;
-    char colors;
-    if (x>0 && y>0 && x<640 && y<480){
-           int location = 80 * y + xx;
-           
-           colors=*(fbp +location);
-           xxxx=128>>xxx;
-           colors=colors & !(xxxx);
-           *((char*)(fbp + location)) = colors;
-
+    int xx = x / 8;
+    int bit = 7 - (x & 7);
+    if (x >= 0 && y >= 0 && x < 640 && y < 480){
+        unsigned int location = (y * 80) + xx;
+        unsigned char mask = 1 >> bit;
+        unsigned char color = *(fbp + location);
+        color |= mask;
+        *(fbp + location) = color;
     }
 }
-
 
 void cls(){
     int a=0;
