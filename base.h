@@ -5896,7 +5896,7 @@ void ppixel(int x, int y){
            int location = 80 * y + xx;
            
            colors=*(fbp +location);
-           xxxx=1<<xxx;
+           xxxx=128>>xxx;
            colors=colors & !(xxxx);
            *((char*)(fbp + location)) = colors;
 
