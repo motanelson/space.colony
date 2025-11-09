@@ -5892,7 +5892,7 @@ void ppixel(int x, int y){
     int bit = 7 - (x & 7);
     if (x >= 0 && y >= 0 && x < 640 && y < 480){
         unsigned int location = (y * 80) + xx;
-        unsigned char mask = 128 >> bit;
+        unsigned char mask = 1 << bit;
         unsigned char color = *(fbp + location);
         color |= mask;
         *(fbp + location) = color;
